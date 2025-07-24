@@ -28,7 +28,7 @@ export const startup = defineType(
             }),
             defineField({
                 name: 'views',
-                title: 'number of views',
+                title: 'Views',
                 type: 'number',
             }),
             defineField({
@@ -52,6 +52,8 @@ export const startup = defineType(
                 name: 'pitch',
                 title: 'Pitch',
                 type: 'markdown',
+                description: 'Write your startup pitch with markdown formatting (headers, lists, bold, italic, links, etc.)',
+                validation: (Rule) => Rule.required().min(10).error('Pitch must be at least 10 characters long'),
             }),
         ],
     }

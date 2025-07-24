@@ -1,22 +1,26 @@
 import { auth } from "@/auth";
 import MouseTracker from "../../components/MouseTracker";
 import SeachForm from "../../components/SeachForm";
-import StartupCard from "@/components/StartupCard";
+import StartupCard, { StartupTypeCard } from "@/components/StartupCard";
+import { client } from "@/sanity/lib/client";
+import { STARTUP_QUERY } from "@/sanity/lib/queries";
 
 export default async function Home({searchParams}: {searchParams : Promise<{query?:string}>}) {
 
   const query = (await searchParams).query;
+  const posts = await client.fetch(STARTUP_QUERY);
+  // console.log(JSON.stringify(posts, null, 2)); 
 
-  const posts = [{
-    _createdAt: new Date(),
-    view: 100,
-    author: {_id:1,name:"Elon Musk"},  
-    _id: "1",
-    description: "This is a sample startup description.",
-    image: "https://via.placeholder.com/150",
-    category: "Robot",
-    title: "we are robot",
-  }]
+  // const posts = [{
+  //   _createdAt: new Date(),
+  //   view: 100,
+  //   author: {_id:1,name:"Elon Musk"},  
+  //   _id: "1",
+  //   description: "This is a sample startup description.",
+  //   image: "https://via.placeholder.com/150",
+  //   category: "Robot",
+  //   title: "we are robot",
+  // }]
 
   return (
     <>
@@ -37,7 +41,7 @@ export default async function Home({searchParams}: {searchParams : Promise<{quer
           </p>
 
           <ul className="mt-7 card_grid">
-            {posts?.length > 0 ? posts.map((post: StartupCardType,index:number) => (
+            {posts?.length > 0 ? posts.map((post: StartupTypeCard,index:number) => (
                 <StartupCard key={post?._id} post={post} />
             )) : "No startups found"}
           </ul>
