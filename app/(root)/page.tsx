@@ -1,14 +1,16 @@
-import { auth } from "@/auth";
 import MouseTracker from "../../components/MouseTracker";
-import SeachForm from "../../components/SeachForm";
+import SeachForm from "@/components/SeachForm";
 import StartupCard, { StartupTypeCard } from "@/components/StartupCard";
-import { client } from "@/sanity/lib/client";
 import { STARTUP_QUERY } from "@/sanity/lib/queries";
+import { sanityFetch } from "@/sanity/lib/live";
 
 export default async function Home({searchParams}: {searchParams : Promise<{query?:string}>}) {
 
   const query = (await searchParams).query;
-  const posts = await client.fetch(STARTUP_QUERY);
+  const params = {search: query || null};
+  const {data: posts} = await sanityFetch({query: STARTUP_QUERY, params});
+
+  // const posts = await client.fetch(STARTUP_QUERY);
   // console.log(JSON.stringify(posts, null, 2)); 
 
   // const posts = [{
@@ -41,7 +43,7 @@ export default async function Home({searchParams}: {searchParams : Promise<{quer
           </p>
 
           <ul className="mt-7 card_grid">
-            {posts?.length > 0 ? posts.map((post: StartupTypeCard,index:number) => (
+            {posts?.length > 0 ? posts.map((post: StartupTypeCard) => (
                 <StartupCard key={post?._id} post={post} />
             )) : "No startups found"}
           </ul>
