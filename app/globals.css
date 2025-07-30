@@ -317,6 +317,26 @@
     .tag-tri {
         @apply before:content-[''] before:absolute before:top-2 before:left-2 before:border-t-[10px] before:border-t-black before:border-r-[10px] before:border-r-transparent after:content-[''] after:absolute after:bottom-2 after:right-2 after:border-b-[10px] after:border-b-black after:border-l-[10px] after:border-l-transparent;
     }
+    .tag {
+        @apply font-medium text-xs text-white/80;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 6px 12px;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(8px);
+        position: relative;
+        z-index: 10;
+        transition: all 0.2s ease;
+        display: inline-block;
+        margin-bottom: 8px;
+        letter-spacing: 0.25px;
+    }
+    
+    .pink_container:hover .tag {
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+        transform: translateY(-1px);
+    }
 }
 
 .w-md-editor-toolbar {

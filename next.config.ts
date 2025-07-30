@@ -8,7 +8,15 @@ const nextConfig: NextConfig = {
         appIsrStatus: true,
         buildActivityPosition: 'bottom-right',
         buildActivity: true,
-    }
+    },
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: '*',
+            },
+        ],
+    },
 };
 
 export default nextConfig;
