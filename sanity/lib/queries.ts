@@ -17,6 +17,7 @@ export const STARTUP_QUERY = defineQuery(`*[_type == "startup" && defined(slug.c
     slug,
     pitch
 }`);
+
 export const STARTUP_QUERY_BY_ID = defineQuery(`*[_type == "startup" && _id== $id] | order(_createdAt desc) {
     _id,
     title,
@@ -34,5 +35,9 @@ export const STARTUP_QUERY_BY_ID = defineQuery(`*[_type == "startup" && _id== $i
     },
     slug,
     pitch
+}`);
+
+export const STARTUP_QUERY_VIEWS = defineQuery(`*[_type == "startup" && _id == $id][0] {
+    views
 }`);
 
