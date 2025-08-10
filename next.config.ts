@@ -5,9 +5,7 @@ const nextConfig: NextConfig = {
         ppr: 'incremental',
     },
     devIndicators:{
-        appIsrStatus: true,
-        buildActivityPosition: 'bottom-right',
-        buildActivity: true,
+        position: 'bottom-right',
     },
     images: {
         remotePatterns: [

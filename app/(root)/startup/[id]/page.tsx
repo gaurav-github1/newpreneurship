@@ -9,7 +9,7 @@ import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import View from "@/components/View";
 
-// export const experimental_ppp = true;
+export const experimental_ppr = true;
 
 export default async function page({params}:{params:Promise<{id:string}>}) {
   const { id } = await params;

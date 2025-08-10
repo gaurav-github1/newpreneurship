@@ -2,7 +2,7 @@ import MouseTracker from "../../components/MouseTracker";
 import SeachForm from "@/components/SeachForm";
 import StartupCard, { StartupTypeCard } from "@/components/StartupCard";
 import { STARTUP_QUERY } from "@/sanity/lib/queries";
-import { sanityFetch } from "@/sanity/lib/live";
+import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 
 export default async function Home({searchParams}: {searchParams : Promise<{query?:string}>}) {
 
@@ -49,6 +49,7 @@ export default async function Home({searchParams}: {searchParams : Promise<{quer
           </ul>
         </section>
 
+        <SanityLive />
       </div>
     </>
   );
