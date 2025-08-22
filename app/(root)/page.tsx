@@ -3,6 +3,7 @@ import SeachForm from "@/components/SeachForm";
 import StartupCard, { StartupTypeCard } from "@/components/StartupCard";
 import { STARTUP_QUERY } from "@/sanity/lib/queries";
 import { sanityFetch, SanityLive } from "@/sanity/lib/live";
+import { auth } from "@/auth";
 
 export default async function Home({searchParams}: {searchParams : Promise<{query?:string}>}) {
 
@@ -10,19 +11,8 @@ export default async function Home({searchParams}: {searchParams : Promise<{quer
   const params = {search: query || null};
   const {data: posts} = await sanityFetch({query: STARTUP_QUERY, params});
 
-  // const posts = await client.fetch(STARTUP_QUERY);
-  // console.log(JSON.stringify(posts, null, 2)); 
-
-  // const posts = [{
-  //   _createdAt: new Date(),
-  //   view: 100,
-  //   author: {_id:1,name:"Elon Musk"},  
-  //   _id: "1",
-  //   description: "This is a sample startup description.",
-  //   image: "https://via.placeholder.com/150",
-  //   category: "Robot",
-  //   title: "we are robot",
-  // }]
+  const session = await auth();
+  // console.log(session); 
 
   return (
     <>

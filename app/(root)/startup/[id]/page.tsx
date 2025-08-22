@@ -38,7 +38,7 @@ export default async function page({params}:{params:Promise<{id:string}>}) {
                 src={post.author.image} 
                 className="rounded-full drop-shadow-lg" 
                 alt="author avatar" 
-                height={74} width={74} 
+                height={54} width={54} 
               />
               <div>
                 <p className="text-20-medium">{post.author.name}</p>

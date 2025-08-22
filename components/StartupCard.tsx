@@ -38,7 +38,7 @@ export default function StartupCard({post}:{post:StartupTypeCard}) {
           </Link>
         </div>
         <Link href={`/user/${author?._id}`}>
-          <img src={author?.image} alt='placeholder' height={74} width={74} className='rounded-full'/>
+          <img src={author?.image} alt='placeholder' height={54} width={54} className='rounded-full'/>
         </Link>
       </div>
 
