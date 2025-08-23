@@ -13,11 +13,11 @@ import { useRouter } from "next/navigation";
 import { createPitch } from "@/lib/actions";
 
 export default function StartupForm() {
-  const [errors,setErrors] = useState<Record<string, string | null>>  ({});
+  const [errors,setErrors] = useState<Record<string, string>>  ({});
   const {toast} = useToast();
   const router = useRouter();
-
   const [pitch, setPitch] = useState<string>("");
+
   const handleFormSubmit = async (prevState: any,formData: FormData)=>{
     try {
       const formValues = {
@@ -31,8 +31,8 @@ export default function StartupForm() {
       await formSchema.parseAsync(formValues);
 
       const result = await createPitch(prevState, formData, pitch);
-      console.log(result.success)
-      if(result.success) {
+      console.log(result.status)
+      if(result.status === "SUCCESS") {
         toast({
           title: "Success",
           description: "Your startup idea has been submitted.",
@@ -45,7 +45,7 @@ export default function StartupForm() {
     } catch (error) {
       if(error instanceof z.ZodError) {
         const fieldErrors = error.flatten().fieldErrors;
-        setErrors(fieldErrors as unknown as Record<string, string | null>);
+        setErrors(fieldErrors as unknown as Record<string, string>);
         toast({
           title: "Validation Error",
           description: "Please fix the errors in the form.",
