@@ -80,6 +80,9 @@ export default function StartupForm() {
   
   return (
     <form action={formAction} className="startup-form">
+        <h2 className="startup-form_title">Submit Your Startup</h2>
+        <p className="startup-form_subtitle">Share your innovative idea with the world</p>
+        
         <div>
             <label htmlFor="title" className="startup-form_label">Title</label>
             <Input id="title" className="startup-form_input" name="title" required placeholder="Startup Title"/>
@@ -89,7 +92,7 @@ export default function StartupForm() {
         <div>
             <label htmlFor="description" className="startup-form_label">Description</label>
 
-            <Textarea id="description" className="startup-form_input" name="description" required placeholder="Startup Description"/>
+            <Textarea id="description" className="startup-form_textarea" name="description" required placeholder="Startup Description"/>
 
             {errors.description && <p className="startup-form_error">{errors.description}</p>}
         </div>

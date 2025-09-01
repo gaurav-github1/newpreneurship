@@ -3,6 +3,8 @@ import "./globals.css";
 import localFont from "next/font/local";
 import "easymde/dist/easymde.min.css";
 import { Toaster } from "@/components/ui/toaster";
+import { SentryProvider } from "./providers/SentryProvider";
+
 // import { SanityLive } from "@/sanity/lib/live";
 
 const workSans = localFont({
@@ -74,9 +76,12 @@ export default function RootLayout({
       <body
         className={`${workSans.variable} antialiased`}
       >
-        {children}
-        {/* <SanityLive /> */}
-        <Toaster />
+        <SentryProvider>
+          {children}
+          {/* <SanityLive /> */}
+          <Toaster />
+          
+        </SentryProvider>
       </body>
     </html>
   );

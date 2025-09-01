@@ -50,3 +50,33 @@ export const AUTHOR_BY_GITHUB_ID_QUERY = defineQuery(`*[_type == "author" && id=
     bio,
     githubId
 }`);
+
+export const AUTHOR_BY_ID_QUERY = defineQuery(`*[_type == "author" && _id==$id][0] {
+    id,
+    _id,
+    name,
+    username,
+    image,
+    bio,
+    githubId
+}`);
+
+
+export const STARTUP_QUERY_BY_AUTHOR = defineQuery(`*[_type == "startup" && author._ref==$id] | order(_createdAt desc) {
+    _id,
+    title,
+    description,
+    image,
+    category,
+    username,
+    views,
+    _createdAt,
+    author-> {
+        _id,
+        name,
+        image,
+    },
+    slug,
+    pitch
+}`);
+

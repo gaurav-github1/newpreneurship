@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { signIn,signOut,auth } from "@/auth";
+import { BadgePlus, LogOut } from "lucide-react";
+import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 
 export default async function Navbar() {
   const session = await auth(); 
@@ -14,22 +16,31 @@ export default async function Navbar() {
         <div className="flex items-center gap-4 text-black">
           {session && session?.user?(
             <>
-              <Link href="/startup/create">
-                <span>Create Startup</span>
-              </Link>
+              <div className="flex items-center gap-4">
+                <Link href="/startup/create">
+                  <span className="max-sm:hidden">Create Startup</span>
+                  <BadgePlus className="size-6 sm:hidden text-green-500" />
+                </Link>
 
-              <form
-                action={async () => {
-                  "use server";
-                  await signOut({redirectTo: "/"});
-                }}
-              >
-                <button type="submit">Sign Out</button>
-              </form>
+                <form
+                  action={async () => {
+                    "use server";
+                    await signOut({redirectTo: "/"});
+                  }}
+                >
+                  <button type="submit" className="flex items-center gap-2">
+                    <span className="max-sm:hidden">Sign Out</span>
+                    <LogOut className="size-6 sm:hidden text-red-500" />
+                  </button>
+                </form>
 
-              <Link href={`/user/${session?.user?.id}`}>
-                <span>{session?.user?.name}</span>
-              </Link>
+                <Link href={`/user/${session?.id}`} className="flex items-center gap-2">
+                  <Avatar className="size-10" >
+                    <AvatarImage src={session?.user?.image || ""} alt={session?.user?.name || ""}/>
+                    <AvatarFallback>{session?.user?.name?.charAt(0) || "U"}</AvatarFallback>
+                  </Avatar>
+                </Link>
+              </div>
             </>
           ): (
             <>
