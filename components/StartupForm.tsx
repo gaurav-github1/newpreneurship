@@ -13,24 +13,57 @@ import { useRouter } from "next/navigation";
 import { createPitch } from "@/lib/actions";
 
 export default function StartupForm() {
-  const [errors,setErrors] = useState<Record<string, string>>  ({});
+  const [errors,setErrors] = useState<Record<string, string>>({});
   const {toast} = useToast();
   const router = useRouter();
-  const [pitch, setPitch] = useState<string>("");
+  
+  // Local state for all form fields to preserve values
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "", 
+    category: "",
+    link: "",
+    pitch: ""
+  });
 
-  const handleFormSubmit = async (prevState: {errors: string; status: string},formData: FormData)=>{
+  // Handle input changes
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+    
+    // Clear error for this field when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({
+        ...prev,
+        [field]: ""
+      }));
+    }
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleFormSubmit = async (prevState: {errors: string; status: string}, _: FormData)=>{
     try {
+      // Use local state values instead of FormData
       const formValues = {
-        title: formData.get("title") as string,
-        description: formData.get("description") as string,
-        category: formData.get("category") as string,
-        link: formData.get("link") as string,
-        pitch,
+        title: formData.title,
+        description: formData.description,
+        category: formData.category,
+        link: formData.link,
+        pitch: formData.pitch,
       }
 
       await formSchema.parseAsync(formValues);
 
-      const result = await createPitch(prevState, formData, pitch);
+      // Create a new FormData object from our local state
+      const serverFormData = new FormData();
+      serverFormData.append('title', formData.title);
+      serverFormData.append('description', formData.description);
+      serverFormData.append('category', formData.category);
+      serverFormData.append('link', formData.link);
+
+      const result = await createPitch(prevState, serverFormData, formData.pitch);
       console.log(result.status)
       if(result.status === "SUCCESS") {
         toast({
@@ -39,6 +72,16 @@ export default function StartupForm() {
           variant: "default"
         });
 
+        // Clear form on success
+        setFormData({
+          title: "",
+          description: "", 
+          category: "",
+          link: "",
+          pitch: ""
+        });
+        setErrors({});
+        
         router.push(`/startup/${result._id}`);
       }
       return result;
@@ -85,32 +128,65 @@ export default function StartupForm() {
         
         <div>
             <label htmlFor="title" className="startup-form_label">Title</label>
-            <Input id="title" className="startup-form_input" name="title" required placeholder="Startup Title"/>
-
+            <Input 
+              id="title" 
+              className="startup-form_input" 
+              name="title" 
+              value={formData.title}
+              onChange={(e) => handleInputChange('title', e.target.value)}
+              required 
+              placeholder="Startup Title"
+            />
             {errors.title && <p className="startup-form_error">{errors.title}</p>}
         </div>
+        
         <div>
             <label htmlFor="description" className="startup-form_label">Description</label>
-
-            <Textarea id="description" className="startup-form_textarea" name="description" required placeholder="Startup Description"/>
-
+            <Textarea 
+              id="description" 
+              className="startup-form_textarea" 
+              name="description" 
+              value={formData.description}
+              onChange={(e) => handleInputChange('description', e.target.value)}
+              required 
+              placeholder="Startup Description"
+            />
             {errors.description && <p className="startup-form_error">{errors.description}</p>}
         </div>
+        
         <div>
             <label htmlFor="category" className="startup-form_label">Category</label>
-            <Input id="category" className="startup-form_input" name="category" required placeholder="Startup Category (e.g. Tech, Health...)"/>
-
+            <Input 
+              id="category" 
+              className="startup-form_input" 
+              name="category" 
+              value={formData.category}
+              onChange={(e) => handleInputChange('category', e.target.value)}
+              required 
+              placeholder="Startup Category (e.g. Tech, Health...)"
+            />
             {errors.category && <p className="startup-form_error">{errors.category}</p>}
         </div>
+        
         <div>
             <label htmlFor="link" className="startup-form_label">Image Url</label>
-            <Input id="link" className="startup-form_input" name="link" required placeholder="Startup Image Url"/>
-
+            <Input 
+              id="link" 
+              className="startup-form_input" 
+              name="link" 
+              value={formData.link}
+              onChange={(e) => handleInputChange('link', e.target.value)}
+              required 
+              placeholder="Startup Image Url"
+            />
             {errors.link && <p className="startup-form_error">{errors.link}</p>}
         </div>
+        
         <div data-color-mode='light'>
             <label htmlFor="pitch" className="startup-form_label">Pitch</label>
-            <MDEditor value={pitch} onChange={(value) => setPitch(value as string)} 
+            <MDEditor 
+              value={formData.pitch} 
+              onChange={(value) => handleInputChange('pitch', value as string)} 
               id="pitch"
               preview="edit"
               height={300}
@@ -122,7 +198,6 @@ export default function StartupForm() {
                 disallowedElements: ['style']
               }}
             />
-
             {errors.pitch && <p className="startup-form_error">{errors.pitch}</p>}
         </div>
     
