@@ -33,7 +33,7 @@ export default async function page({params}:{params:Promise<{id:string}>}) {
       </section>
 
       <section className="section_container">
-        <img src={post.image} alt="thumbnail" className="w-full h-auto rounded-xl" />
+        <Image src={post.image} alt="thumbnail" className="w-full h-auto rounded-xl" width={800} height={600} />
       
         <div className="space-y-5 mt-10 max-w-4xl mx-auto">
           <div className="flex-between gap-5">
@@ -64,7 +64,7 @@ export default async function page({params}:{params:Promise<{id:string}>}) {
         {editorPick.length > 0 && (
           <div className="max-w-4xl mx-auto">
             <p className="text-30-semibold">
-              Editor's Pick
+              Editor&apos;s Pick
             </p>
             <ul className="mt-7 card_grid-sm">
               {editorPick.map((startup: StartupTypeCard,i : number) => (

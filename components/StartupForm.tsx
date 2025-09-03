@@ -18,7 +18,7 @@ export default function StartupForm() {
   const router = useRouter();
   const [pitch, setPitch] = useState<string>("");
 
-  const handleFormSubmit = async (prevState: any,formData: FormData)=>{
+  const handleFormSubmit = async (prevState: {errors: string; status: string},formData: FormData)=>{
     try {
       const formValues = {
         title: formData.get("title") as string,
@@ -73,7 +73,7 @@ export default function StartupForm() {
 
   };
 
-  const [state,formAction,isPending] = useActionState(handleFormSubmit,{
+  const [,formAction,isPending] = useActionState(handleFormSubmit,{
     errors: "",
     status: "INITIAL"
   })
