@@ -11,13 +11,40 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientSecret: process.env.AUTH_GITHUB_SECRET,
     }),
   ],
+  
+  secret: process.env.AUTH_SECRET,
+  trustHost: true, // Critical for production deployments
+  
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+
+  pages: {
+    signIn: '/',
+    error: '/',
+  },
+
+  cookies: {
+    pkceCodeVerifier: {
+      name: "authjs.pkce.code_verifier",
+      options: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax", // Important for OAuth flow
+        path: "/",
+      },
+    },
+  },
 
   callbacks: {
     async signIn({user,profile}){
       if (!profile?.id) return false;
-      const existingUser = await client.fetch(AUTHOR_BY_GITHUB_ID_QUERY, {
-        id: profile.id
-      });
+      const existingUser = await client
+        .withConfig({ useCdn: false })
+        .fetch(AUTHOR_BY_GITHUB_ID_QUERY, {
+          id: profile.id
+        });
 
       if(!existingUser){
         await writeClient.create({
@@ -36,7 +63,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
     async jwt({token,profile,account}) {
       if(account && profile){
-        const user = await client.fetch(AUTHOR_BY_GITHUB_ID_QUERY, {id: profile.id})
+        const user = await client
+          .withConfig({ useCdn: false })
+          .fetch(AUTHOR_BY_GITHUB_ID_QUERY, {
+            id: profile.id
+          });
 
         token.id = user?._id;
       }
