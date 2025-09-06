@@ -10,8 +10,16 @@ export default async function Navbar() {
   return (
     <header className="px-5 py-3 bg-white shadow-md font-work-sans">
       <nav className="flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold">
-          <Image src="/logo.jpg" alt="logo" width={60} height={30} className="rounded-full" />
+        <Link href="/" className="text-2xl font-bold flex items-center gap-2">
+          <Image 
+            src="/logo.png" 
+            alt="Newpreneurship Logo" 
+            width={40} 
+            height={40} 
+            className="rounded-lg"
+            priority
+          />
+          <span className="max-sm:hidden text-black">Newpreneurship</span>
         </Link>
         <div className="flex items-center gap-4 text-black">
           {session && session?.user?(
